@@ -42,6 +42,7 @@ const playSong = () => {
   isPlaying = true;
   playBtn.classList.replace("fa-play", "fa-pause");
   playBtn.setAttribute("title", "pause");
+
   music.play();
 };
 
@@ -60,6 +61,7 @@ let songIndex = 0;
 //prev song
 const prevSong = () => {
   songIndex--;
+  // go to the last song in the array when we try to go to the previous song from the first song
   songIndex < 0 ? (songIndex = songs.length - 1) : loadSong(songs[songIndex]);
   playSong();
 };
