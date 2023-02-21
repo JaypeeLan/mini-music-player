@@ -121,14 +121,18 @@ const updateProgressBar = (e) => {
 };
 
 function setProgressBar(e) {
+  // width of the curent playing song progress bar
   const width = this.clientWidth;
+
+  // position on the progress bar that was click
   const clickX = e.offsetX;
-  console.log(clickX);
 
   // ------------------------
+  // duration of the song currently playing
   const { duration } = music;
 
-  console.log((clickX / width) * duration);
+  // ? clickX / width gives the positon that was click on the progress bar relative to the width
+  // *  (clickX / width * duration) calculates the position that was clicked relative to the duration of the current song
 
   music.currentTime = (clickX / width) * duration;
 }
@@ -143,4 +147,6 @@ playBtn.addEventListener("click", () => (isPlaying ? pauseSong() : playSong()));
 prevBtn.addEventListener("click", prevSong);
 nextBtn.addEventListener("click", nextSong);
 music.addEventListener("timeupdate", updateProgressBar);
+
+// auto jump to next song at the end of the current song
 music.addEventListener("ended", nextSong);
