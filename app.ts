@@ -1,41 +1,51 @@
-const image = document.querySelector("img");
-const title = document.getElementById("title");
-const artist = document.getElementById("artist");
-const progressContainer = document.getElementById("progress-container");
-const progress = document.getElementById("progress");
-const currentTimeELem = document.getElementById("current-time");
-const durationELem = document.getElementById("duration");
-const music = document.querySelector("audio");
-const prevBtn = document.getElementById("prev");
-const playBtn = document.getElementById("play");
-const nextBtn = document.getElementById("next");
+const image = document.querySelector("img")! as HTMLImageElement;
+const title = document.getElementById("title")! as HTMLElement;
+const artist = document.getElementById("artist")! as HTMLElement;
+const progressContainer = document.getElementById(
+  "progress-container"
+)! as HTMLElement;
+const progress = document.getElementById("progress")! as HTMLElement;
+const currentTimeELem = document.getElementById("current-time")! as HTMLElement;
+const durationELem = document.getElementById("duration")! as HTMLElement;
+const music = document.querySelector("audio")! as HTMLAudioElement;
+const prevBtn = document.getElementById("prev")! as HTMLElement;
+const playBtn = document.getElementById("play")! as HTMLElement;
+const nextBtn = document.getElementById("next")! as HTMLElement;
 
+// -------------------
+let songIndex: number = 1;
+// check if playing
+let isPlaying: boolean = false;
+
+// --------
+interface Song {
+  name: string;
+  displayName: string;
+  artist: string;
+}
 // songs
 const songs = [
   {
     name: "jacinto-1",
-    displayNmae: "Electric Chill Machine",
+    displayName: "Electric Chill Machine",
     artist: "John Doe",
   },
   {
     name: "jacinto-2",
-    displayNmae: "Seven Nation Army",
+    displayName: "Seven Nation Army",
     artist: "Jacinto Designe",
   },
   {
     name: "jacinto-3",
-    displayNmae: "hello world",
+    displayName: "hello world",
     artist: "Jacinto Design",
   },
   {
     name: "metric-1",
-    displayNmae: "Front Row (remix)",
+    displayName: "Front Row (remix)",
     artist: "John Doe",
   },
 ];
-
-// check if playing
-let isPlaying = false;
 
 // play func
 const playSong = () => {
@@ -55,8 +65,14 @@ const pauseSong = () => {
   music.pause();
 };
 
-// -------------------
-let songIndex = 0;
+// ---------------------------------
+// update DOM while clicking next/previous
+const loadSong = (song: Song) => {
+  title.textContent = song.displayName;
+  artist.textContent = song.artist;
+  music.src = `music/${song.name}.mp3`;
+  image.src = `img/${song.name}.jpg`;
+};
 
 //prev song
 const prevSong = () => {
@@ -74,20 +90,8 @@ const nextSong = () => {
   playSong();
 };
 
-// ---------------------------------
-// update DOM while clicking next/previous
-const loadSong = (song) => {
-  title.textContent = song.displayNmae;
-  artist.textContent = song.artist;
-  music.src = `music/${song.name}.mp3`;
-  image.src = `img/${song.name}.jpg`;
-};
-
-//?  on page load - select first song
-loadSong(songs[songIndex]);
-
 // update progress bar and time
-const updateProgressBar = (e) => {
+const updateProgressBar = (e: any) => {
   if (isPlaying) {
     const { duration, currentTime } = e.srcElement;
 
@@ -100,7 +104,7 @@ const updateProgressBar = (e) => {
     const durationMins = Math.floor(duration / 60);
 
     // calc duration secs
-    let durationSecs = Math.floor(duration % 60);
+    let durationSecs: string | number = Math.floor(duration % 60);
 
     durationSecs < 10 ? (durationSecs = `0${durationSecs}`) : "";
 
@@ -122,7 +126,7 @@ const updateProgressBar = (e) => {
   }
 };
 
-function setProgressBar(e) {
+function setProgressBar(this: any, e: any) {
   // width of the curent playing song progress bar
   const width = this.clientWidth;
 
